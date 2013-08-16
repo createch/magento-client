@@ -19,11 +19,11 @@ def products_to_skus(products):
     return dict([(int(prod.product_id), prod) for prod in products])
 
 
-def get_magento_products(client, session):
+def get_magento_products(api, session):
     """ Gets products from Magento's API """
-    products = client.service.catalogProductList(session)
+    products = api.catalogProductList(session)
     skus = [product['sku'] for product in products]
-    inventory = client.service.catalogInventoryStockItemList(session, skus)
+    inventory = api.catalogInventoryStockItemList(session, skus)
     transformed = products_to_skus(inventory)
     ordoro_products = []
     for product in products:
@@ -33,6 +33,10 @@ def get_magento_products(client, session):
             "quantity": transformed[int(product.product_id)].qty
         })
     return ordoro_products
+
+
+def set_magento_products():
+    pass
 
 
 def get_api_products():
@@ -46,9 +50,13 @@ def main():
     password = 'abc123'
     url = 'http://magento.localhost/api/v2_soap/?wsdl'
     client = Client(url)
+    api = client.service
     session = client.service.login(username, password)
-    products = get_magento_products(client, session)
-    print products
+    products = get_magento_products(api, session)
+    products[0].qty = 3
+    products[1].qty = 4
+    products[2].qty = 5
+    set_magento_products(api, session, products[0:2])
 
 
 if __name__ == "__main__":
