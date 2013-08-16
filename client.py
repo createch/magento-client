@@ -5,8 +5,7 @@ def enable_logging():
     import logging
     logging.basicConfig(level=logging.INFO)
     logging.getLogger('suds.client').setLevel(logging.DEBUG)
-    logging.getLogger('suds.transport').setLevel(
-        logging.DEBUG)  # MUST BE THIS?
+    logging.getLogger('suds.transport').setLevel(logging.DEBUG)
     # logging.getLogger('suds.xsd.schema').setLevel(logging.DEBUG)
     # logging.getLogger('suds.wsdl').setLevel(logging.DEBUG)
     # logging.getLogger('suds.resolver').setLevel(logging.DEBUG)
@@ -35,11 +34,13 @@ def get_magento_products(api, session):
     return ordoro_products
 
 
-def set_magento_products():
-    pass
+def set_magento_products_inventory(api, session, products):
+    """ Updates the product quantity for the specified products in Magento """
+    for product in products:
+        api.catalogInventoryStockItemUpdate(session, product['cart_specific_id'], {'qty': product['quantity']})
 
 
-def get_api_products():
+def get_api_products(ordoro_url, ordoro_key):
     """ Simulates querying products from Ordoro's API """
     return [{'sku': 'n2610', 'quantity': 996.0000, 'cart_specific_id': 16},
             {'sku': 'bb8100', 'quantity': 797.0000, 'cart_specific_id': 17}]
@@ -48,15 +49,19 @@ def get_api_products():
 def main():
     username = 'username'
     password = 'abc123'
-    url = 'http://magento.localhost/api/v2_soap/?wsdl'
-    client = Client(url)
+    magento_url = 'http://magento.localhost/api/v2_soap/?wsdl'
+    client = Client(magento_url)
     api = client.service
     session = client.service.login(username, password)
     products = get_magento_products(api, session)
-    products[0].qty = 3
-    products[1].qty = 4
-    products[2].qty = 5
-    set_magento_products(api, session, products[0:2])
+    print "Before:", products[0:3]
+    products[0]['quantity'] = 3
+    products[1]['quantity'] = 4
+    products[2]['quantity'] = 5
+    set_magento_products_inventory(api, session, products[0:3])
+    products = get_magento_products(api, session)
+    print "After:", products[0:3]
+    print "Get Ordoro API Products: ", get_api_products('http://fake.com', 'trollolol')
 
 
 if __name__ == "__main__":
