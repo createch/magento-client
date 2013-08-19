@@ -17,7 +17,7 @@ class APIClient(object):
 class MagentoClient(APIClient):
 
     def __init__(self, username, password):
-        super(MagentoClient, self).__init()
+        super(MagentoClient, self).__init__()
         magento_url = 'http://magento.localhost/api/v2_soap/?wsdl'
         self.username = username
         self.password = password
@@ -66,7 +66,7 @@ class MagentoClient(APIClient):
 class OrdoroClient(APIClient):
 
     def __init__(self, apikey):
-        super(OrdoroClient, self).__init()
+        super(OrdoroClient, self).__init__()
         ordoro_url = 'http://ordoro.com/api/'
         self.apikey = apikey
 
