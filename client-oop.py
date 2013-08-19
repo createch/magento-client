@@ -2,11 +2,14 @@ from suds.client import Client
 
 
 class APIClient(object):
+
     def __init__(self):
         self.products = []
         pass
+
     def get_products(self):
         return self.products
+
     def update_products(self):
         pass
 
@@ -33,25 +36,26 @@ class MagentoClient(APIClient):
 
     def product_format(self, product, stock):
         return {
-            "sku": product.sku,
-            "cart_specific_id": product.product_id,
-            "quantity": stock[product.product_id].qty
+            'sku': product.sku,
+            'cart_specific_id': product.product_id,
+            'quantity': stock[product.product_id].qty
         }
 
-    def get_products(self):   
-        """ Gets the products from the API and returns them as a list of 
-            ordoro formatted products. """   
+    def get_products(self):
+        """ Gets the products from the API and returns them as a list of
+            ordoro formatted products. """
         products_cat = self.api.catalogProductList(self.session)
         skus = self.skus_for_products_catalog(products_cat)
         inventory = self.api.catalogInventoryStockItemList(self.session, skus)
         inventory_dict = self.inventory_dict(inventory)
         for product in products_cat:
             inventory_status = inventory_dict[product.product_id]
-            self.products.append(self.product_format(product, inventory_status))
+            self.products.append(
+                self.product_format(product, inventory_status))
         return self.products
 
     def update_products(self, products):
-        """ Updates the quantity of each product in the ordoro formatted list 
+        """ Updates the quantity of each product in the ordoro formatted list
             of products. """
         for product in products:
             id = product['cart_specific_id']
@@ -60,5 +64,6 @@ class MagentoClient(APIClient):
 
 
 class OrdoroClient(APIClient):
+
     def __init__(self, username, password):
-        super(MagentoClient, self).__init()
+        super(OrdoroClient, self).__init()
