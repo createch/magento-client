@@ -33,28 +33,26 @@ class MagentoClient(APIClient):
     def inventory_to_dict(self, inventory_list):
         """ Returns a dictionary of products with product_id as the key.
             Allows us to do the look up in constant time. """
-        return dict([(int(prod.product_id), prod) for prod in inventory_list])
+        return dict([(int(prod['product_id']), prod) for prod in inventory_list])
 
     def product_format(self, product, stock):
         return {
-            'sku': product.sku,
-            'cart_specific_id': int(product.product_id),
-            'quantity': stock.qty
+            'sku': product['sku'],
+            'cart_specific_id': int(product['product_id']),
+            'quantity': stock['qty']
         }
 
     def get_products(self):
         """ Gets the products from the API and returns them as a list of
             ordoro formatted products. """
         # first get the list of products
-        # import pdb; pdb.set_trace()
         products_cat = self.api.catalogProductList(self.session)
         skus = self.skus_for_products_catalog(products_cat)
         # then get the inventory status for these items, identified by their sku
         inventory_list = self.api.catalogInventoryStockItemList(self.session, skus)
         inventory_dict = self.inventory_to_dict(inventory_list)
-        # import pdb; pdb.set_trace()
         for product in products_cat:
-            inventory_status = inventory_dict[int(product.product_id)]
+            inventory_status = inventory_dict[int(product['product_id'])]
             self.products.append(
                 self.product_format(product, inventory_status))
         return self.products
