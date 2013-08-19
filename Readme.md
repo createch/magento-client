@@ -35,8 +35,8 @@ Tests
 
 See the `tests.py` file. Creates an instance of the MagentoClient and tests for the following:
 
-    - The session key should be a string
-    - The skus for products function should return strings in a specific format
-    - The inventory_to_dict function correctly converts the inventory list into a dict
-    - The product_format function correctly creates a dict using the product and inventory info
-    - The get_products should get a list of dicts with SKUs that are suds strings
+- The session key should be a string
+- The skus for products function should return strings in a specific format
+- The inventory_to_dict function correctly converts the inventory list into a dict
+- The product_format function correctly creates a dict using the product and inventory info
+- The get_products should get a list of dicts with SKUs that are suds strings
