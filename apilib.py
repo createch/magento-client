@@ -17,9 +17,8 @@ class APIClient(object):
 class MagentoClient(APIClient):
     """ A client for the Magento API. Demonstrates how to get and update products from the Magento API. """
 
-    def __init__(self, username, password):
+    def __init__(self, username, password, magento_url):
         super(MagentoClient, self).__init__()
-        magento_url = 'http://magento.localhost/api/v2_soap/?wsdl'
         self.username = username
         self.password = password
         self.client = Client(magento_url)
@@ -68,9 +67,8 @@ class MagentoClient(APIClient):
 
 class OrdoroClient(APIClient):
 
-    def __init__(self, apikey):
+    def __init__(self, apikey, ordoro_url):
         super(OrdoroClient, self).__init__()
-        ordoro_url = 'http://ordoro.com/api/'
         self.apikey = apikey
 
     def get_products(self):
