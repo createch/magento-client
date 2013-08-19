@@ -15,6 +15,7 @@ class APIClient(object):
 
 
 class MagentoClient(APIClient):
+    """ A client for the Magento API. Demonstrates how to get and update products from the Magento API. """
 
     def __init__(self, username, password):
         super(MagentoClient, self).__init__()
@@ -44,8 +45,10 @@ class MagentoClient(APIClient):
     def get_products(self):
         """ Gets the products from the API and returns them as a list of
             ordoro formatted products. """
+        # first get the list of products
         products_cat = self.api.catalogProductList(self.session)
         skus = self.skus_for_products_catalog(products_cat)
+        # then get the inventory status for these items, identified by their sku
         inventory = self.api.catalogInventoryStockItemList(self.session, skus)
         inventory_dict = self.inventory_dict(inventory)
         for product in products_cat:
