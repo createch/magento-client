@@ -53,21 +53,26 @@ class TestMagentoClient(unittest.TestCase):
         }
 
     def test_init(self):
+        """ The session key should be a string """
         self.assertIsInstance(self.m.session, suds.sax.text.Text)
 
     def test_skus_for_products_catalog(self):
+        """ The skus for products function should return strings in this format """
         self.assertListEqual(['mycomputer', 'HTC Touch Diamond'],
                              self.m.skus_for_products_catalog(self.products_catalog))
 
     def test_inventory_to_dict(self):
+        """ The inventory_to_dict function correctly converts the inventory list into a dict """
         self.assertDictEqual(self.inventory_dict,
                              self.m.inventory_to_dict(self.inventory_list))
 
     def test_product_format(self):
+        """ The product_format function correctly creates a dict using the product and inventory info """
         self.assertDictEqual(self.formatted_product,
                              self.m.product_format(self.products_catalog[0], self.inventory_dict[165]))
 
     def test_get_products(self):
+        """ The get_products should get a list of dicts with SKUs that are suds strings. """
         products = self.m.get_products()
         self.assertIsInstance(products, list)
         self.assertIsInstance(products[0], dict)
