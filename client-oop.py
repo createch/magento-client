@@ -65,5 +65,11 @@ class MagentoClient(APIClient):
 
 class OrdoroClient(APIClient):
 
-    def __init__(self, username, password):
+    def __init__(self, apikey):
         super(OrdoroClient, self).__init()
+        ordoro_url = 'http://ordoro.com/api/'
+        self.apikey = apikey
+
+    def get_products():
+        return [{'sku': 'n2610', 'quantity': 996.0000, 'cart_specific_id': 16},
+            {'sku': 'bb8100', 'quantity': 797.0000, 'cart_specific_id': 17}]
