@@ -1,4 +1,24 @@
+import unittest
+import suds
+from apilib import MagentoClient
 
+class TestMagentoClient(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_init(self):
+        self.m = MagentoClient('username', 'abc123')
+        print type(self.m.session)
+        self.assertIsInstance(self.m.session, suds.sax.text.Text)
+
+    def test_skus_for_products_catalog():
+        
+        m.skus_for_products_catalog()                
+
+
+if __name__ == "__main__":
+    unittest.main()
 
 """
 
