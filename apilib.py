@@ -5,7 +5,6 @@ class APIClient(object):
 
     def __init__(self):
         self.products = []
-        pass
 
     def get_products(self):
         return self.products
